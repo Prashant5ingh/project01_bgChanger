@@ -1,25 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { removeTodo } from '../features/todo/todoSlice'
+import { deleteTask, addTask } from './Service'
+
 
 function Todos() {
-const selectedTodos = useSelector( state => state.todos) // it gives access of state as parameter
-const dispatch = useDispatch()
-
+  const selectedTodos = useSelector(state => state.todos) // it gives access of state as parameter
+  const dispatch = useDispatch()
 
 
   return (
-    <> 
-    <h1 className="mt-10 font-bold text-3xl">Todos</h1>
-    <ul className="list-none">
+    <>
+      <h1 className="mt-10 font-bold text-3xl">Todos</h1>
+      <ul className="list-none">
         {selectedTodos.map((todo) => (
           <li
             className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded-2xl"
             key={todo.id}
           >
+
             <div className='text-white'>{todo.text}</div>
+            {/* <div className='text-white'>{todo.text}</div> */}
             <button
-             onClick={() => dispatch(removeTodo(todo.id))} // onClick --> takes reference and dispatch calls removeTodo action.This click removes todo by id
+              onClick={() => {
+                dispatch(removeTodo(todo.id)) // or we can write like dispatch(removeTodo({id:todo.id})) & deleteTask({id:todo.id}) without adding extra { }
+                deleteTask(todo.id)
+              }
+
+              } // onClick --> takes reference and dispatch calls removeTodo action.This click removes todo by id
               className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-400 rounded-2xl text-md cursor-pointer"
             >
               <svg

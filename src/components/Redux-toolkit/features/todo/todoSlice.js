@@ -1,7 +1,9 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';  // nanoid generates unique ids
 
 const initialState = {   // could be array or object
-    todos: [{ id: 1, text: "Hello World" }]  // This text todo would be shown in the begining when app loads.
+    // todos: [{ id: 1, text: "Hello World" }]  // This text todo would be shown in the begining when app loads.
+    todos: [],  // This text todo would be shown in the begining when app loads.
+    nextId: 1
 }  // initial state --> how store will look in starting like empty, with values or put values by fetching from db.
 
 
@@ -17,10 +19,14 @@ export const todoSlice = createSlice({
         // Always have access of state and action (syntax)
         addTodo: (state, action) => {
             const todo = {
-                id: nanoid(),
-                text: action.payload  // payload itself is a object. So, we can further access its properties like  via ".". payload is the data we are passing to the reducer to update the state.
+                id: action.payload.id,  // generating unique id using nanoid if id is not provided in payload
+                // id: state.nextId, // Use the counter as the ID
+                // id: nanoid(),  // generating unique id using nanoid if id is not provided in payload
+                text: action.payload.text // payload itself is a object. So, we can further access its properties like  via ".". payload is the data we are passing to the reducer to update the state.
+                
             }
             state.todos.push(todo)  // array to push and object to add property
+            // state.nextId += 1; // Increment the counter
         },   // function reference but not calling it  --> sayHello
 
         removeTodo: (state, action) => {

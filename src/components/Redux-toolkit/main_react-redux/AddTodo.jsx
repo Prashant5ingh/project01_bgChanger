@@ -1,18 +1,43 @@
-import React from 'react'
-import { useDispatch} from 'react-redux'
+import React,{useEffect,useState} from 'react'
+import { useDispatch,useSelector} from 'react-redux'
 import {addTodo} from '../features/todo/todoSlice'
+import { tasklist,addTask } from './Service'
+import { nanoid } from '@reduxjs/toolkit';
 function AddTodo() {  // using usedispatch
 
   const [input, setInput] = React.useState('')
+  // const [list, setLists] = useState()
+  const selectedTodos = useSelector(state => state.todos) // it gives access of state as parameter
   const dispatch = useDispatch() // adds or changes value to the store using reducers
   // useDispatch and useSelector are use to connect react with redux store (wiring between react and redux)
+  
+  async function tasklistData() {
+    const tasks = await tasklist();
+    // setLists(tasks[0].content);
+    tasks.forEach(task => {
+
+      // dispatch(addTodo(task.content))
+      dispatch(addTodo({id:task.id,text:task.content}))
+    })
+    
+  }
+  useEffect(() => {
+    tasklistData();
+    
+    
+  },[])
 
   const addTodoHandler = (e) => {
     e.preventDefault();
      if(input === '') return;
-    dispatch(addTodo(input))
+     const newId = nanoid();
+    dispatch(addTodo({id:newId,text:input}))  // dispatching addTodo action to the reducer with payload as input
     setInput('') // to clear input field after adding a todo
+    
+    addTask({ id:newId,content: input }); // content is the property name expected by the backend
   }
+
+
   return (
      <form onSubmit={addTodoHandler} className="space-x-3 mt-16">
       <input
