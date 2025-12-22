@@ -102,7 +102,7 @@ function PasswordGen() {
                             id="char"
                             onChange={() => setchars((prev) => !prev) }
                         />
-                        <label className='text-gray-200'>Character</label>
+                        <label className='text-gray-200'>Special Character</label>
                     </div>
 
 
