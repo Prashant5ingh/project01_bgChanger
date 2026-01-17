@@ -4,7 +4,7 @@ import axios from 'axios';
 export async function tasklist() {
     console.log("tasklist backend service calls")
     try {
-        const res = await axios.get('http://localhost:5500/tasklist')
+        const res = await axios.get('https://prime17.pythonanywhere.com/tasklist')
         return res.data;
     }
     catch (error) {
